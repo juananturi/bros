@@ -1,19 +1,14 @@
 from functools import wraps
-from flask import Flask, render_template, url_for, request, redirect, session
-from app_factory import app, db
-from models import db
+from flask import Flask, render_template, request, redirect, session, url_for
+from flask_login import current_user, login_required
+from app_factory import app, db, login_manager
 from models.usuario import Usuario
 from models.empleado import Empleado
-from datetime import date
 import datetime
-import bcrypt
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:3116257241Js@localhost/pedidos_entregas_db'
-app.secret_key = 'secret_key'
-db.init_app(app)
+# Clave de seguridad 
+app.secret_key = 'tu_clave_secreta_aqui'
 
-#
 
 # middleware
  
@@ -32,11 +27,17 @@ def check_role(role):
 
 # Routes 
 
+# Definir la función user_loader
+@login_manager.user_loader
+def load_user(user_id):
+    
+    return Usuario.query.get(int(user_id))
+
 @app.route('/', methods=['GET'])
 def home():
    return render_template('index.html')
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     if request.method == 'POST':
         # Capturar los datos del formulario
@@ -54,7 +55,7 @@ def register():
         return redirect('/login')
 
     # Renderizar la página de registro
-    return render_template('register.html')
+    pass
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -75,6 +76,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     if 'usuario' in session:
         usuario = Usuario.query.filter_by(usuario=session['usuario']).first()
@@ -84,19 +86,19 @@ def dashboard():
 
 @app.route('/logout')
 def logout():
-    session.pop('email',None)
+    session.pop('usuario', None)
     return redirect('/login')
 
 
 @app.route('/listar_empleados')
-@check_role('adminitrativo')  # Agrega el decorador de verificación de rol
+@check_role('administrativo')  # Agrega el decorador de verificación de rol
 def listar_empleados():
     # Consulta la base de datos para obtener la lista de empleados
     empleados = Empleado.query.all()
     return render_template('listar_empleados.html', empleados=empleados)
 
 @app.route('/registrar_empleado', methods=['GET', 'POST'])
-@check_role('adminitrativo')
+@check_role('administrativo')
 def registrar_empleado():
     if request.method == 'POST':
         # Obtén los datos del formulario

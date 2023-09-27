@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
+from app_factory import db
 
-db = SQLAlchemy()
 
 # Importa todos tus modelos aquí
 from .departamento import Departamento
