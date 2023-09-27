@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+
+<main class="d-flex">
+    <div class="container-fluid row m-0 vh-100 justify-content-center align-items-center">
+        <div class="card shadow w-50">
+            <form action="/login" method="POST">
+                <h3 class="text-center">Pedidos y Entregas </h3>
+                <h5 class="text-center">Login</h5>
+
+                <label for="">Email</label>
+                <input type="email" class="form-control mb-3 " name="usuario">
+                <label for="">Contraseña</label>
+                <input type="password" class="form-control mb-3 " name="contraseña">
+
+                {% if message%}
+                    <div class="alert alert-danger alert-dismissible fade show " role="alert">
+                        <strong>Error</strong>{{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary w-100">Acceder</button>
+            </form>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}
+
+    
+</body>
+</html>
