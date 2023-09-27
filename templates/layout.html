@@ -18,12 +18,15 @@
             <li>
                 <a href="{{ url_for('login')}}">login</a>
             </li>
+            {% if session.get('rol') == 'adminitrativo' %}
             <li>
                 <a href="{{ url_for('crear_empleado')}}">Crear empleado</a>
             </li> 
+            
             <li>
                 <a href="{{ url_for('empleados')}}">Listado De Empleados</a>
             </li>
+            {% endif %}
             <li>
                 <a href="{{ url_for('pedidos')}}">Pedidos</a>
             </li>

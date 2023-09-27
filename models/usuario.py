@@ -1,19 +1,13 @@
-from flask_sqlalchemy import SQLAlchemy
+from . import db
 import bcrypt
-
-db = SQLAlchemy()
-
-class Rol(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(50), nullable=False)
-
+# Definir el modelo de Usuario
 class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_rol = db.Column(db.Integer, db.ForeignKey('rol.id'), nullable=False)
     usuario = db.Column(db.String(50), nullable=False)
-    contraseña = db.Column(db.String(100), nullable=False)
+    contraseña = db.Column(db.String(50), nullable=False)
     fecha_registro = db.Column(db.Date, nullable=False)
-
+    
     # Establecer la relación con la tabla 'rol'
     rol = db.relationship('Rol', backref=db.backref('usuarios', lazy=True))
 

@@ -1,46 +1,36 @@
+from functools import wraps
 from flask import Flask, render_template, url_for, request, redirect, session
-from flask_sqlalchemy import SQLAlchemy
-from models import Usuario, Rol
+from app_factory import app, db
+from models import db
+from models.usuario import Usuario
+from models.empleado import Empleado
 from datetime import date
 import datetime
 import bcrypt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:3116257241Js@localhost/pedidos_entregas_db'
-db = SQLAlchemy(app)
 app.secret_key = 'secret_key'
+db.init_app(app)
 
-# MODELOS 
+#
 
-# Definir el modelo de Rol
-class Rol(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(50), nullable=False)
+# middleware
+ 
+def check_role(role):
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapper(*args, **kwargs):
+            # Verifica si el usuario tiene el rol adecuado en la sesión
+            if session.get('rol') == role:
+                return view_func(*args, **kwargs)
+            else:
+                # Redirige a alguna página de error o realiza alguna acción apropiada
+                return redirect(url_for('home'))  # Cambia esto según tus necesidades
+        return wrapper
+    return decorator
 
-
-# Definir el modelo de Usuario
-class Usuario(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    id_rol = db.Column(db.Integer, db.ForeignKey('rol.id'), nullable=False)
-    usuario = db.Column(db.String(50), nullable=False)
-    contraseña = db.Column(db.String(50), nullable=False)
-    fecha_registro = db.Column(db.Date, nullable=False)
-    
-    # Establecer la relación con la tabla 'rol'
-    rol = db.relationship('Rol', backref=db.backref('usuarios', lazy=True))
-
-    def __init__(self, id_rol, usuario, contraseña, fecha_registro):
-        self.id_rol = id_rol
-        self.usuario = usuario
-        self.contraseña = bcrypt.hashpw(contraseña.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        self.fecha_registro = fecha_registro
-
-    def check_contraseña(self, contraseña):
-        return bcrypt.checkpw(contraseña.encode('utf-8'), self.contraseña.encode('utf-8'))
-
-with app.app_context():
-    db.create_all()
-
+# Routes 
 
 @app.route('/', methods=['GET'])
 def home():
@@ -98,11 +88,49 @@ def logout():
     return redirect('/login')
 
 
-@app.route('/crear_empleado', methods=['GET', 'POST'])
-def crear_empleado():
-   if request.method == 'POST':
-     pass
-   return render_template('crear_empleado.html')
+@app.route('/listar_empleados')
+@check_role('adminitrativo')  # Agrega el decorador de verificación de rol
+def listar_empleados():
+    # Consulta la base de datos para obtener la lista de empleados
+    empleados = Empleado.query.all()
+    return render_template('listar_empleados.html', empleados=empleados)
+
+@app.route('/registrar_empleado', methods=['GET', 'POST'])
+@check_role('adminitrativo')
+def registrar_empleado():
+    if request.method == 'POST':
+        # Obtén los datos del formulario
+        nombre = request.form['nombre']
+        apellidos = request.form['apellidos']
+        cedula = request.form['cedula']
+        direccion = request.form['direccion']
+        departamento_id = request.form['departamento']
+        municipio_id = request.form['municipio']
+        barrio = request.form['barrio']
+        tipo_empleado_id = request.form['tipo_empleado']
+        salario = request.form['salario']
+
+        # Crea un nuevo empleado en la base de datos
+        nuevo_empleado = Empleado(
+            nombre=nombre,
+            apellidos=apellidos,
+            cedula=cedula,
+            direccion=direccion,
+            departamento=departamento_id,
+            municipio=municipio_id,
+            barrio=barrio,
+            tipo_empleado=tipo_empleado_id,
+            salario=salario
+        )
+
+        db.session.add(nuevo_empleado)
+        db.session.commit()
+
+        # Redirige a la lista de empleados después de registrar
+        return redirect('/listar_empleados')
+
+    return render_template('crear_empleado.html')
+
 
 @app.route('/empleado', methods=['GET', 'POST'])
 def empleados():
