@@ -1,7 +1,7 @@
 
 const apiInfo = document.getElementById("apiInfo");
-const selectDepartment = document.getElementById("selectDepartment");
-const selectCity = document.getElementById("selectCity");
+const selectDepartment = document.getElementById("departamento");
+const selectCity = document.getElementById("municipio");
 let departmentsId = [];
 
 let url = "https://www.datos.gov.co/resource/xdk5-pm3f.json";

@@ -40,11 +40,11 @@
       <div class="loader"><img src="images/loading.gif" alt="#" /></div>
     </div>
     <!-- end loader -->
-    {% if current_user.is_authenticated %}
     <div id="mySidepanel" class="sidepanel">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
         <a href="{{ url_for('home')}}">Inicio</a>
-        <a href="{{ url_for('empleados')}}">Empleado</a>
+        <a href="{{ url_for('listar_empleados') }}">Empleado</a>
+        <a href="{{ url_for('crear_empleado') }}">Crear Empleado</a>
         <a href="{{ url_for('pedidos')}}">Ventas</a>
         <a href="{{ url_for('clientes')}}">Clientes</a>
         <a href="{{ url_for('productos')}}">Productos</a>
@@ -55,7 +55,6 @@
             <a href="/logout">Cerrar sesión</a>
         </div>
     </div>
-    {% endif %}
 
 
     

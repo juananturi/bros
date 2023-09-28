@@ -9,7 +9,7 @@
 <section class="banner_main">
 <div class=" container bg-dark p-3 rounded text-white">
     <h1 class="text-white text-center" >Crear empleado</h1>
-    <form>
+    <form method="POST" action="{{ url_for('crear_empleado')}}">
         <div class="row">
             <div class="form-group col-6">
                 <label for="exampleInputEmail1">Nombre</label>
@@ -30,14 +30,14 @@
             <div class="form-group col-6">
                 <label for="exampleInputEmail1">Departamento</label>
                 
-                <select  class="form-control" name="Departamento" id="selectDepartment">
+                <select  class="form-control" name="departamento" id="departamento">
                     <option value="null">--seleccione un departamento</option>     
                 </select>
             </div>
             <div class="form-group col-6">
                 <label for="exampleInputEmail1">municipio</label>
                 
-                <select  class="form-control" name="municipio" id="selectCity">
+                <select  class="form-control" name="municipio" id="municipio">
                     <option value="null">--Seleccione una municipio</option>
                 </select>
             </div>
@@ -57,7 +57,7 @@
                 <label for="exampleInputEmail1">Salario</label>
                 <input type="text" class="form-control" name="salario" >
                 <br>
-                <button class="btn btn-primary m-e">Crear empleado</button>
+                <button type="submit" class="btn btn-primary m-e">Crear empleado</button>
             </div>
         </form>
     </div>

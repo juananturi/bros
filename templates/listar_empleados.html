@@ -1,25 +1,53 @@
 {% extends 'base.html' %}
 
 {% block title %}
-   Crear Empleado
+   Listar  Empleado
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Crear Nuevo Empleado</h2>
-    <form method="POST" action="/registrar_empleado">
-        <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" required>
-        </div>
-        <div class="form-group">
-            <label for="cargo">Cargo:</label>
-            <input type="text" class="form-control" id="cargo" name="cargo" required>
-        </div>
-        <!-- Otros campos del empleado, como email, teléfono, etc. -->
-        <!-- Agrega aquí los campos que necesites para tu aplicación -->
+<!-- Abre una tabla HTML con encabezados de columna -->
+<table>
+    <thead>
+        <tr>
+            <!-- Define los encabezados de las columnas de la tabla -->
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Cédula</th>
+            <th>Dirección</th>
+            <th>Departamento</th>
+            <th>Municipio</th>
+            <th>Barrio</th>
+            <th>Tipo de Empleado</th>
+            <th>Salario</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Comienza un bucle "for" que recorre la lista de empleados -->
+        {% for empleado in empleados %}
+        <tr>
+            <!-- Dentro de cada iteración, muestra los datos del empleado en las celdas de la tabla -->
+            <td>{{ empleado.nombre }}</td>
+            <td>{{ empleado.apellidos }}</td>
+            <td>{{ empleado.cedula }}</td>
+            <td>{{ empleado.direccion }}</td>
+            
+            <!-- Accede al nombre del departamento a través de la relación "departamento_rel" -->
+            <td>{{ empleado.departamento_rel.nombre }}</td>
+            
+            <!-- Accede al nombre del municipio a través de la relación "municipio_rel" -->
+            <td>{{ empleado.municipio_rel.nombre }}</td> 
+            
+            <td>{{ empleado.barrio }}</td>
+            
+            <!-- Accede al nombre del tipo de empleado a través de la relación "tipo_empleado_rel" -->
+            <td>{{ empleado.tipo_empleado_rel.nombre }}</td> 
+            
+            <td>{{ empleado.salario }}</td>
+        </tr>
+        <!-- Cierra la iteración "for" -->
+        {% endfor %}
+    </tbody>
+</table>
 
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </form>
-</div>
+
 {% endblock %}

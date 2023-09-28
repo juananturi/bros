@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from app_factory import db
 
 
-# Importa todos tus modelos aquí
+# Importa modelos 
 from .departamento import Departamento
 from .municipio import Municipio
 from .tipo_empleado import TipoEmpleado
@@ -21,15 +21,13 @@ from .detalle_producto import DetalleProducto
 def init_app(app):
     db.init_app(app)
 
-    # Define las relaciones entre los modelos aquí
-    # Ejemplo de relación entre Empleado y Departamento
-    Empleado.departamento_rel = db.relationship('Departamento', foreign_keys=[Empleado.departamento_id])
-    Empleado.municipio_rel = db.relationship('Municipio', foreign_keys=[Empleado.municipio_id])
-    Empleado.tipo_empleado_rel = db.relationship('TipoEmpleado', foreign_keys=[Empleado.tipo_empleado_id])
+    # relación entre Empleado y Departamento
+    Empleado.departamento_rel = db.relationship('Departamento', foreign_keys=[Empleado.departamento])
+    Empleado.municipio_rel = db.relationship('Municipio', foreign_keys=[Empleado.municipio])
+    Empleado.tipo_empleado_rel = db.relationship('TipoEmpleado', foreign_keys=[Empleado.tipo_empleado])
 
-    # Define otras relaciones aquí, siguiendo el mismo patrón
+  
 
     with app.app_context():
         db.create_all()
 
-# Asegúrate de importar todos tus modelos y definir sus relaciones aquí

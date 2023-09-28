@@ -151,3 +151,7 @@ CREATE TABLE detalle_producto (
     FOREIGN KEY (detalle_id) REFERENCES detalle_pedidos(Id),
     FOREIGN KEY (producto_id) REFERENCES producto(Id) -- Asume que existe una tabla llamada empleados
 ); 
+
+-- INYECCION DE DATOS DE DEPARTAMENTO 
+
+-- INYECCION DE DATOS DE MUNICIPIO 

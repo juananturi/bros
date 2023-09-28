@@ -58,15 +58,15 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        # Buscar al usuario por su nombre de usuario (email en este caso)
+        # Buscar al usuario por su nombre de usuario 
         user = Usuario.query.filter_by(usuario=email).first()
 
         if user and user.check_contraseña(password):
             session['usuario'] = user.usuario 
-            return redirect('/dashboard')
+            return render_template('dashboard.html')
         else:
             return render_template('index.html', error='Usuario o contraseña incorrectos')
-
+   
 # Ruta del dashboard, protegida por login_required
 @app.route('/dashboard')
 @login_required
@@ -84,17 +84,11 @@ def logout():
     return redirect('/')
 
 # Ruta para listar empleados, protegida por check_role('admin')
-@app.route('/listar_empleados_all')
-@check_role('admin')
-def listar_empleados_all():
-    # Consulta la base de datos para obtener la lista de empleados
-    empleados = Empleado.query.all()
-    return render_template('listar_empleados.html', empleados=empleados)
+
 
 # Ruta para registrar un empleado, protegida por check_role('admin')
-@app.route('/registrar_empleado', methods=['GET', 'POST'])
-@check_role('admin')
-def registrar_empleado():
+@app.route('/crear_empleado', methods=['GET', 'POST'])
+def crear_empleado():
     if request.method == 'POST':
         # Obtén los datos del formulario
         nombre = request.form['nombre']
@@ -102,7 +96,7 @@ def registrar_empleado():
         cedula = request.form['cedula']
         direccion = request.form['direccion']
         departamento_id = request.form['departamento']
-        municipio_id = request.form['municipio']
+        municipio_id= request.form['municipio']
         barrio = request.form['barrio']
         tipo_empleado_id = request.form['tipo_empleado']
         salario = request.form['salario']
@@ -124,39 +118,18 @@ def registrar_empleado():
         db.session.commit()
 
         # Redirige a la lista de empleados después de registrar
-        return redirect('/listar_empleados')
-
-# Otras rutas para empleados y pedidos
-@app.route('/empleados', methods=['GET'])
-def listar_empleados():
-    empleados = Empleado.query.all()
-    return render_template('empleados.html', empleados=empleados)
-
-@app.route('/registrar_empleado', methods=['POST'])
-def registrar_empleado():
-    if request.method == 'POST':
-        # Captura los datos del formulario
-        nombre = request.form['nombre']
-        apellidos = request.form['apellidos']
-        cedula = request.form['cedula']
-        
-
-        # Crea un nuevo empleado
-        nuevo_empleado = Empleado(nombre=nombre, apellidos=apellidos, cedula=cedula)
-        db.session.add(nuevo_empleado)
-        db.session.commit()
-
-        # Crea un nuevo usuario para el empleado
-        usuario = request.form['usuario']
-        contraseña = request.form['contraseña']
-        contraseña_hash = bcrypt.generate_password_hash(contraseña).decode('utf-8')
-        nuevo_usuario = Usuario(usuario=usuario, contraseña=contraseña_hash, empleado=nuevo_empleado)
-        db.session.add(nuevo_usuario)
-        db.session.commit()
-
-        
         return redirect(url_for('listar_empleados'))
 
+    return render_template('crear_empleado.html')
+
+
+@app.route('/listar_empleados', methods=['GET'])
+def listar_empleados():
+    # Obtén todos los empleados de la base de datos
+    empleados = Empleado.query.all()
+    
+    # Renderiza la plantilla HTML y pasa la lista de empleados como contexto
+    return render_template('listar_empleados.html', empleados=empleados)
 
 @app.route('/pedidos', methods=['GET', 'POST'])
 def pedidos():
