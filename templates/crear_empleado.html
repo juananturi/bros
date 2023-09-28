@@ -1,56 +1,69 @@
-{% extends 'layout.html' %}
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
 
-{% block title %}
-   Crear Empleado
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Crear Nuevo Empleado</h2>
-    <form method="POST" action="/registrar_empleado">
-        <div class="form-group">
-            <label for="nombre">Nombre:</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" required>
-        </div>
-        <div class="form-group">
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" class="form-control" id="apellidos" name="apellidos" required>
-        </div>
-        <div class="form-group">
-            <label for="cedula">Cédula:</label>
-            <input type="text" class="form-control" id="cedula" name="cedula" required>
-        </div>
-        <div class="form-group">
-            <label for="direccion">Dirección:</label>
-            <input type="text" class="form-control" id="direccion" name="direccion">
-        </div>
-        <div class="form-group">
-            <label for="departamento">Departamento:</label>
-            <select class="form-control" id="departamento" name="departamento">
-                <!-- Opciones de departamentos -->
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="municipio">Municipio:</label>
-            <select class="form-control" id="municipio" name="municipio">
-                <!-- Opciones de municipios -->
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="barrio">Barrio:</label>
-            <input type="text" class="form-control" id="barrio" name="barrio">
-        </div>
-        <div class="form-group">
-            <label for="tipo_empleado">Tipo de Empleado:</label>
-            <select class="form-control" id="tipo_empleado" name="tipo_empleado">
-                <!-- Opciones de tipos de empleado -->
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="salario">Salario:</label>
-            <input type="text" class="form-control" id="salario" name="salario">
-        </div>
-        <button type="submit" class="btn btn-primary">Registrar</button>
-    </form>
+<section class="banner_main">
+<div class=" container bg-dark p-3 rounded text-white">
+    <h1 class="text-white text-center" >Crear empleado</h1>
+    <form>
+        <div class="row">
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Nombre</label>
+                <input type="text" class="form-control" name="nombre" >
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Apellidos</label>
+                <input type="text" class="form-control" name="apellidos" >
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Cédula</label>
+                <input type="text" class="form-control" name="cedula" >
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Dirección</label>
+                <input type="text" class="form-control" name="direccion" >
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Departamento</label>
+                
+                <select  class="form-control" name="Departamento" id="selectDepartment">
+                    <option value="null">--seleccione un departamento</option>     
+                </select>
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">municipio</label>
+                
+                <select  class="form-control" name="municipio" id="selectCity">
+                    <option value="null">--Seleccione una municipio</option>
+                </select>
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Barrio</label>
+                <input type="text" class="form-control" name="barrio" >
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Tipo de empleado</label>
+                
+                <select  class="form-control" name="tipo_empleado">
+                    <option value="1">Administrativo</option>
+                    <option value="2">Empleado</option>
+                </select>
+            </div>
+            <div class="form-group col-6">
+                <label for="exampleInputEmail1">Salario</label>
+                <input type="text" class="form-control" name="salario" >
+                <br>
+                <button class="btn btn-primary m-e">Crear empleado</button>
+            </div>
+        </form>
+    </div>
 </div>
+</section>
+
+<script src="../static/js/departamentos.js"></script>
+
 {% endblock %}

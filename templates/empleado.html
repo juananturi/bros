@@ -1,11 +1,36 @@
-{% extends 'layout.html' %}
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
 
-{% block title %}
-   Login 
 {% endblock %}
 
 {% block content %}
-
-    <h1>hola chester alberto </h1>
+<section class="banner_main">
+<div class=" container">
+    <table class="table table-bordered table-dark rounded">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Cédula</th>
+            <th scope="col">Salario</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+            <!-- PONER UN FOREACH AQUI QUE MUESTRE TODOS LOS DATOS DEL EMPLEADO -->
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>Otto</td>
+            <td><button class="btn btn-warning">Editar</button> <button class="btn btn-danger">Eliminar</button></td>
+          </tr>
+          </tr>
+        </tbody>
+      </table>
+</div>
+</section>
 
 {% endblock %}
